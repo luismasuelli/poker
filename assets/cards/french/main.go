@@ -76,3 +76,24 @@ func (card Card) Suit() Suit {
 func (card Card) Face() string {
 	return faces[int(card)]
 }
+
+// Makes a card given a suit and a rank.
+// The rank is applied module-16. The
+// suit is applied module-4 with an offset
+// of 1.
+func MakeCard(suit Suit, rank uint8) Card {
+	suit -= 1
+	suit %= 4
+	suit += 1
+	return Card(uint8(suit << 4) + (rank & 15))
+}
+
+// An unknown card. This card is not yet revealed
+// and triggers an error if used on evaluators.
+// Its only purpose is to be serialized to the
+// client.
+var Unknown = Card(0)
+
+// A joker card. Standard french cards consider
+// the joker as the only wildcard-typed card.
+var Joker = Card(80)
