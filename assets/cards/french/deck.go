@@ -144,3 +144,6 @@ var DiamondsDeck = CustomDeck(1, []uint8{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
 
 // A 13-cards deck consisting of spades-suited cards only.
 var SpadesDeck = CustomDeck(1, []uint8{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, []Suit{Spades}, 0)
+
+// A Kuhn Poker's deck
+var KuhnDeck = CustomDeck(1, []uint8{11, 12, 13}, []Suit{Spades}, 0)
