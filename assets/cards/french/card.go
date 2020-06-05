@@ -1,28 +1,42 @@
 package french
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/luismasuelli/poker/assets/cards"
+)
 
-var faces = (func() []string {
-	result := make([]string, 256)
-	result[0] = "??"
+var faces, flags = (func() ([]string, []cards.CardFlags) {
+	faces := make([]string, 256)
+	flags := make([]cards.CardFlags, 256)
+
+	faces[0] = "??"
+	flags[0] = cards.Unknown
 	for index := 1; index <= 15; index++ {
-		result[index] = "!!"
+		faces[index] = "!!"
+		flags[index] = cards.Unknown
 	}
 	suits := " chds "
 	ranks := "  23456789TJQKA "
 	for suit := 1; suit <= 4; suit++ {
-		result[suit*16] = "!!"
-		result[suit*16+1] = "!!"
-		result[suit*16+15] = "!!"
+		faces[suit * 16] = "!!"
+		faces[suit * 16 + 1] = "!!"
+		faces[suit * 16 + 15] = "!!"
+		flags[suit * 16] = cards.Invalid
+		flags[suit * 16 + 1] = cards.Invalid
+		flags[suit * 16 + 15] = cards.Invalid
 		for rank := 2; rank <= 14; rank++ {
-			result[suit*16+rank] = fmt.Sprintf("%c%c", ranks[rank], suits[suit])
+			faces[suit * 16 + rank] = fmt.Sprintf("%c%c", ranks[rank], suits[suit])
+			flags[suit * 16 + rank] = cards.Valid
 		}
 	}
-	result[80] = "*w"
-	for entry := 81; entry < 255; entry++ {
-		result[entry] = "!!"
+	faces[80] = "*w"
+	flags[80] = cards.Valid
+	for entry := 81; entry <= 255; entry++ {
+		faces[entry] = "!!"
+		flags[entry] = cards.Invalid
 	}
-	return result
+
+	return faces, flags
 })()
 
 // A standard suit in a french deck.
@@ -77,6 +91,15 @@ func (card Card) Face() string {
 	return faces[int(card)]
 }
 
+// A standard card flags will consider
+// the (2..A)x{chds} and joker cards as
+// valid. The 0 card is chosen as unknown,
+// and other cards are considered invalid
+// for being unexpected.
+func (card Card) Flags() cards.CardFlags {
+	return flags[int(card)]
+}
+
 // Makes a card given a suit and a rank.
 // The rank is applied module-16. The
 // suit is applied module-4 with an offset
@@ -92,8 +115,8 @@ func MakeCard(suit Suit, rank uint8) Card {
 // and triggers an error if used on evaluators.
 // Its only purpose is to be serialized to the
 // client.
-var Unknown = Card(0)
+var Unknown = Card(uint8(Hidden))
 
 // A joker card. Standard french cards consider
 // the joker as the only wildcard-typed card.
-var Joker = Card(80)
+var Joker = Card(uint8(Wildcard) << 4)
