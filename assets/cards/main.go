@@ -57,12 +57,16 @@ type Card interface {
 // function to use in a shuffle.
 type Deck interface {
 	// Copies the entire deck, creating a new one.
+	// This method should only be run on templates,
+	// and not expected to be safe on concurrency.
 	Copy() Deck
 	// Gets the length of a deck (considering its
 	// remaining cards).
 	Len() int
 	// A swapper function to use in a shuffler.
-	Swapper() func(i, j int)
+	// Panics should be normally raised in this
+	// functions when indices are out of bounds.
+	Swap(i, j int)
 	// Deals cards from the top of the deck (i.e.
 	// it unstacks the last cards). The cards are
 	// returned in unstacked order (i.e. reverse
