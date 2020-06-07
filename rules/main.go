@@ -1,6 +1,15 @@
 package rules
 
-import "github.com/luismasuelli/poker/assets/cards"
+import (
+	"errors"
+	"github.com/luismasuelli/poker/assets/cards"
+)
+
+// Raised by panic when attempting to deal < 1 cards.
+var ErrDealBadCount = errors.New("invalid number of cards to deal")
+
+// Raised by panic when attempting to deal > length(deck) cards.
+var ErrDealNotEnough = errors.New("not enough cards to deal")
 
 // Decks keep collections of cards. They can copy
 // themselves, deal one or more cards (panicking
