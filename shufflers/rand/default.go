@@ -1,9 +1,9 @@
 package rand
 
 import (
-	"github.com/luismasuelli/poker/assets/cards"
-	"time"
+	"github.com/luismasuelli/poker/rules"
 	"math/rand"
+	"time"
 )
 
 // A default shuffler uses the default, global, rand
@@ -16,7 +16,7 @@ type DefaultShuffler struct {
 
 // Shuffles a deck using its Len and Swap methods
 // in the underlying rand object.
-func (shuffler *DefaultShuffler) Shuffle(deck cards.Deck) {
+func (shuffler *DefaultShuffler) Shuffle(deck rules.Deck) {
 	if shuffler.timeSeed {
 		rand.Seed(time.Now().UTC().UnixNano())
 	}

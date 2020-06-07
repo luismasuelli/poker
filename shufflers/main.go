@@ -1,6 +1,6 @@
 package shufflers
 
-import "github.com/luismasuelli/poker/assets/cards"
+import "github.com/luismasuelli/poker/rules"
 
 // Shufflers provide only one method to shuffle any
 // given deck (regardless the deck type). The
@@ -8,5 +8,5 @@ import "github.com/luismasuelli/poker/assets/cards"
 // use of the .Swap(i, j) and .Len() functions
 // inside a deck.
 type Shuffler interface {
-	Shuffle(deck cards.Deck)
+	Shuffle(deck rules.Deck)
 }

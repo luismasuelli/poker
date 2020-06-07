@@ -1,8 +1,8 @@
 package rand
 
 import (
+	"github.com/luismasuelli/poker/rules"
 	"math/rand"
-	"github.com/luismasuelli/poker/assets/cards"
 	"time"
 )
 
@@ -16,7 +16,7 @@ type CustomShuffler struct {
 
 // Shuffles a deck using its Len and Swap methods
 // in the underlying rand object.
-func (shuffler *CustomShuffler) Shuffle(deck cards.Deck) {
+func (shuffler *CustomShuffler) Shuffle(deck rules.Deck) {
 	if shuffler.timeSeed {
 		shuffler.randObj.Seed(time.Now().UTC().UnixNano())
 	}
@@ -33,7 +33,7 @@ func NewShuffler(source rand.Source, timeSeed bool, initialSeed int64) *CustomSh
 		source = rand.NewSource(initialSeed)
 	}
 	shuffler := &CustomShuffler{
-		randObj: rand.New(source),
+		randObj:  rand.New(source),
 		timeSeed: timeSeed,
 	}
 	return shuffler
