@@ -8,6 +8,62 @@ var faces = [64]string{
 	"*w", "!!", "!!", "!!", "!!", "!!", "!!", "!!", "!!", "!!", "!!", "!!",
 }
 
+const (
+	C2 Card = iota
+	C3
+	C4
+	C5
+	C6
+	C7
+	C8
+	C9
+	CT
+	CJ
+	CQ
+	CK
+	CA
+	H2
+	H3
+	H4
+	H5
+	H6
+	H7
+	H8
+	H9
+	HT
+	HJ
+	HQ
+	HK
+	HA
+	D2
+	D3
+	D4
+	D5
+	D6
+	D7
+	D8
+	D9
+	DT
+	DJ
+	DQ
+	DK
+	DA
+	S2
+	S3
+	S4
+	S5
+	S6
+	S7
+	S8
+	S9
+	ST
+	SJ
+	SQ
+	SK
+	SA
+	W_
+)
+
 // Defines a french card (1 out of 53, since the
 // wildcards also count).
 type Card uint8
