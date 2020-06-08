@@ -26,9 +26,9 @@ var cardMasks = (func() [52]uint32 {
 })()
 
 // Full mask telling the space the 1-hot bits are relevant.
-const fullMask = 0x1111111111111111100
-const rankMask = 0x1111111111111000000
-const indxMask = 0x0000000000000000011
+const fullMask uint32 = 0b1111111111111111100
+const rankMask uint32 = 0b1111111111111000000
+const indxMask uint32 = 0b0000000000000000011
 
 // A Badugi evaluator tries to return the best hand
 // with the LEAST possible power. "A234" completely
