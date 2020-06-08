@@ -1,9 +1,9 @@
 package french
 
 import (
-	"github.com/luismasuelli/poker/assets/cards"
-	"github.com/luismasuelli/poker/assets/cards/french"
-	"github.com/luismasuelli/poker/rules"
+	"github.com/luismasuelli/poker-go/assets/cards"
+	"github.com/luismasuelli/poker-go/assets/cards/french"
+	"github.com/luismasuelli/poker-go/rules"
 )
 
 // A standard french deck contains a sequence of standard french

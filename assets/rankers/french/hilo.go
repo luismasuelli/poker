@@ -1,9 +1,9 @@
 package french
 
 import (
-	"github.com/luismasuelli/poker/assets/cards"
-	"github.com/luismasuelli/poker/assets/cards/french"
-	"github.com/luismasuelli/poker/assets/rankers"
+	"github.com/luismasuelli/poker-go/assets/cards"
+	"github.com/luismasuelli/poker-go/assets/cards/french"
+	"github.com/luismasuelli/poker-go/assets/rankers"
 )
 
 // Ranks a french card, all of them but wildcards

@@ -1,7 +1,7 @@
 package rand
 
 import (
-	"github.com/luismasuelli/poker/rules"
+	"github.com/luismasuelli/poker-go/rules"
 	"math/rand"
 	"time"
 )

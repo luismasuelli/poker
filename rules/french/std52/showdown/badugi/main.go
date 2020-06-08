@@ -1,8 +1,8 @@
 package badugi
 
 import (
-	"github.com/luismasuelli/poker/assets/cards"
-	"github.com/luismasuelli/poker/assets/cards/french"
+	"github.com/luismasuelli/poker-go/assets/cards"
+	"github.com/luismasuelli/poker-go/assets/cards/french"
 )
 
 // Masks of 1-hot rank and 1-hot suit.

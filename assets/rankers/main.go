@@ -1,7 +1,7 @@
 package rankers
 
 import (
-	"github.com/luismasuelli/poker/assets/cards"
+	"github.com/luismasuelli/poker-go/assets/cards"
 	"errors"
 )
 

@@ -2,7 +2,7 @@ package rules
 
 import (
 	"errors"
-	"github.com/luismasuelli/poker/assets/cards"
+	"github.com/luismasuelli/poker-go/assets/cards"
 )
 
 // Raised by panic when attempting to deal < 1 cards.
