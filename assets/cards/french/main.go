@@ -68,6 +68,10 @@ const (
 // wildcards also count).
 type Card uint8
 
+func (card Card) String() string {
+	return faces[card]
+}
+
 func (card Card) Face() string {
 	return faces[card]
 }
