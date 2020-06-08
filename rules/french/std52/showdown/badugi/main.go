@@ -55,10 +55,10 @@ func Power(hand []cards.Card, community []cards.Card) (best uint32, power uint64
 	}
 	// First check cards that match TWO other cards or more,
 	// and remove them.
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 4; i++ {
 		count := 0
-		for j := i + 1; j < 4; j++ {
-			if handMask[i]&handMask[j]&fullMask != 0 {
+		for j := 0; j < 4; j++ {
+			if j != i && handMask[i]&handMask[j]&fullMask != 0 {
 				count++
 			}
 		}
