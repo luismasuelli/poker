@@ -1,0 +1,5 @@
+The showdown algorithms here are Versiones Sumamente Chotas of what one should use for simulations.
+This, because these algorithms will not be used for simulations but just for table evaluation.
+
+In a distant future, even far beyond the moment the mankind defeats AIDS, Cancer and Coronavirus,
+I may implement better versions of these algorithms. But not now. Fuck everything.
