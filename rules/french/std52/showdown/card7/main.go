@@ -3,7 +3,7 @@ package card7
 import "github.com/luismasuelli/poker-go/assets/cards"
 
 // All the available 7C5 combinations.
-var Combinations = [][]uint64{
+var Combinations = [][]uint32{
 	{0b0011111, 1, 1, 1, 1, 1, 0, 0},
 	{0b0101111, 1, 1, 1, 1, 0, 1, 0},
 	{0b1001111, 1, 1, 1, 1, 0, 0, 1},
