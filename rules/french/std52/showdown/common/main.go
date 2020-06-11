@@ -1,6 +1,20 @@
 package common
 
-var HighRanges = []uint64{
+var Suits = []int{
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+}
+
+var Ranks = []int{
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+}
+
+var HighRanks = []uint64{
 	0, // Code 0 does not exist.
 	0, // Code 1 does not exist.
 	0b000000000000000000000000000000000000001, // 2,...
@@ -19,7 +33,7 @@ var HighRanges = []uint64{
 	0, // Code 15 does not exist.
 }
 
-var LowballRanges = []uint64{
+var LowballRanks = []uint64{
 	0, // Code 0 does not exist.
 	0, // Code 1 does not exist.
 	0b000000000000000000000000000000000001000, // 2,...
