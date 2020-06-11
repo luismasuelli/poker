@@ -17,7 +17,7 @@ import (
 func Power(hand []cards.Card, community []cards.Card) (best uint32, power uint64) {
 	rankBits := uint64(0)
 	for _, card := range hand {
-		rankBits |= common.LowballRanks[common.Ranks[card.(french.Card)]]
+		rankBits += common.LowballRanks[common.Ranks[card.(french.Card)]]
 	}
 	power = common.Std52LowballPower(rankBits)
 	best = 0b11111

@@ -19,7 +19,7 @@ func Power(hand []cards.Card, community []cards.Card) (best uint32, power uint64
 	rankBits := uint64(0)
 	for _, card := range hand {
 		suitBits &= common.Suits[card.(french.Card)]
-		rankBits |= common.HighRanks[common.Ranks[card.(french.Card)]]
+		rankBits += common.HighRanks[common.Ranks[card.(french.Card)]]
 	}
 	power = common.Std52HighPower(rankBits, suitBits != 0)
 	best = 0b11111
