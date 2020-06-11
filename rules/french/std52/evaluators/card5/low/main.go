@@ -2,7 +2,7 @@ package low
 
 import (
 	"github.com/luismasuelli/poker-go/assets/cards"
-	"github.com/luismasuelli/poker-go/rules/french/std52/showdown/common"
+	"github.com/luismasuelli/poker-go/rules/french/std52/evaluators/common"
 )
 
 // Computes the power of a hand using the lowball
