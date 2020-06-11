@@ -15,7 +15,7 @@ import (
 // - 7-Cards stud when owning 6 cards, and 1 in community (8 active players on
 //   showdown).
 func Power(hand []cards.Card, community []cards.Card) (best uint32, power uint64) {
-	fullHand := card7.AddCards(hand, community)
+	fullHand := common.AddCards(hand, community)
 	power = 0
 	best = 0
 	for _, combination := range card7.Combinations {
