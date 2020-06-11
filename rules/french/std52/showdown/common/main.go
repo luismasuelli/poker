@@ -265,6 +265,18 @@ func Std52LowballPower(handBits uint64) uint64 {
 	}
 }
 
+// Combines the hand cards and community cards in a single
+// array to be used by each player.
+func AddCards(hand, community []cards.Card) []cards.Card {
+	communityLen := len(community)
+	if communityLen == 0 {
+		return hand
+	} else {
+		handLen := len(hand)
+		return append(append(make([]cards.Card, 0, handLen+communityLen), hand...), community...)
+	}
+}
+
 // Given a list of cards (which can be considered a merge between
 // base hand and community), a combination of cards to pick, and
 // the ranks to use, returns the addition of rank bits and the
@@ -280,18 +292,6 @@ func Pick(fullHand []cards.Card, combination []uint32, modifiedRanks []uint64) (
 		}
 	}
 	return
-}
-
-// Combines the hand cards and community cards in a single
-// array to be used by each player.
-func AddCards(hand, community []cards.Card) []cards.Card {
-	communityLen := len(community)
-	if communityLen == 0 {
-		return hand
-	} else {
-		handLen := len(hand)
-		return append(append(make([]cards.Card, 0, handLen+communityLen), hand...), community...)
-	}
 }
 
 // Given a list of cards (which can only be thought as hand cards),
