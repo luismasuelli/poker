@@ -256,6 +256,6 @@ func Std52LowballPower(handBits uint64) uint64 {
 			return 1<<39 | (oak2&mask)<<13 | (kicker & mask)
 		}
 	} else {
-		return kicker
+		return kicker & mask
 	}
 }

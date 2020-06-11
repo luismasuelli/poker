@@ -1,0 +1,41 @@
+package low
+
+import (
+	"github.com/luismasuelli/poker-go/assets/cards"
+	. "github.com/luismasuelli/poker-go/assets/cards/french"
+	"testing"
+)
+
+func testHandPower(t *testing.T, expectedPower uint64, cards ...cards.Card) {
+	_, power := Power(cards, nil)
+	if power != expectedPower {
+		t.Errorf("Testing hand: %v\nexpected power: %#064b\n     got power: %#064b\n", cards, expectedPower, power)
+	}
+}
+
+func TestHandPowers(t *testing.T) {
+	// 4 of a kind.
+	testHandPower(t, 0b0111000000000000000000000000010000010000000, SA, CA, HA, DA, S8)
+	testHandPower(t, 0b0111000000000000010000000000000000000000001, SK, CK, HK, DK, SA)
+	testHandPower(t, 0b0111000000000000000000000100000100000000000, SQ, S5, C5, H5, D5)
+	// Full house.
+	testHandPower(t, 0b0110000000000000000000000100000100000000000, SQ, S5, C5, HQ, D5)
+	testHandPower(t, 0b0110000000000000010000000000000000000000001, SA, SK, CK, HA, DK)
+	testHandPower(t, 0b0110000000000000000000100000001000000000000, H8, SK, CK, H8, D8)
+	// 3 of a kind.
+	testHandPower(t, 0b0011000000000000000010000000000110000000000, CT, ST, DT, CJ, CQ)
+	testHandPower(t, 0b0011000000000000000000000000010000001000100, DA, SA, CA, C3, H7)
+	testHandPower(t, 0b0011000000000000000000000010000000100100000, C4, D4, S4, H6, S9)
+	// Double Pair.
+	testHandPower(t, 0b0010000000000000000010100000000100000000000, CT, ST, D8, C8, CQ)
+	testHandPower(t, 0b0010000000000000000000010000010001000000000, DA, SA, HT, C7, H7)
+	testHandPower(t, 0b0010000000000000000000000010100000100000000, C2, D2, S4, H4, S9)
+	// Pair.
+	testHandPower(t, 0b0001000000000000000010000000000100010001000, CT, ST, D4, C8, CQ)
+	testHandPower(t, 0b0001000000000000000000000000010001001000100, DA, SA, HT, C3, H7)
+	testHandPower(t, 0b0001000000000000000000000000100000100001100, C2, D2, S3, H4, S9)
+	// Bust / High Card.
+	testHandPower(t, 0b0000000000000000000000000000000000111101000, S7, S9, C6, H4, S8)
+	testHandPower(t, 0b0000000000000000000000000000000001010100101, HA, D6, D3, H8, HT)
+	testHandPower(t, 0b0000000000000000000000000000000001001001101, DT, CA, S3, H4, D7)
+}
