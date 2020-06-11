@@ -162,7 +162,22 @@ func Std52HighPower(handBits uint64, hasFlush bool) uint64 {
 		if power := std52TestStraight(handBits); power != 0 {
 			return 8<<39 | power
 		} else {
-			return 5<<39 | handBits
+			// This is the same algorithm to collect 1-size patterns,
+			// but with all the unnecessary branching removed.
+			j := 0
+			result := uint64(0)
+			activate := uint64(1)
+			for i := 0; i < 39; i += 3 {
+				bits := handBits & 7
+				if bits != 0 {
+					result |= activate
+				}
+				handBits >>= 3
+				activate <<= 1
+				j++
+			}
+			// Save for the result, which is a flush-based one.
+			return 5<<39 | result
 		}
 	} else if power := std52TestStraight(handBits); power != 0 {
 		return 4<<39 | power
