@@ -1,5 +1,10 @@
 package common
 
+import (
+	"github.com/luismasuelli/poker-go/assets/cards"
+	"github.com/luismasuelli/poker-go/assets/cards/french"
+)
+
 var Suits = []int{
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -258,4 +263,34 @@ func Std52LowballPower(handBits uint64) uint64 {
 	} else {
 		return kicker & mask
 	}
+}
+
+// Given a list of cards (which can be considered a merge between
+// base hand and community), a combination of cards to pick, and
+// the ranks to use, returns the addition of rank bits and the
+// intersection of rank suits.
+func Pick(fullHand []cards.Card, combination []uint32, modifiedRanks []uint64) (handBits uint64, suitBits int) {
+	suitBits = 0b1111
+	handBits = uint64(0)
+	for index, bit := range combination[1:] {
+		if bit == 1 {
+			card := fullHand[index].(french.Card)
+			suitBits &= Suits[card]
+			handBits += modifiedRanks[Ranks[card]]
+		}
+	}
+	return
+}
+
+// Given a list of cards (which can only be thought as hand cards),
+// and the ranks to use, returns the addition of rank bits and the
+// intersection of rank suits.
+func PickAll(hand []cards.Card, modifiedRanks []uint64) (handBits uint64, suitBits int) {
+	suitBits = 0b1111
+	handBits = uint64(0)
+	for _, card := range hand {
+		suitBits &= Suits[card.(french.Card)]
+		handBits += modifiedRanks[Ranks[card.(french.Card)]]
+	}
+	return
 }
