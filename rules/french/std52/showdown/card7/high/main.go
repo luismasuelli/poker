@@ -20,7 +20,7 @@ func Power(hand []cards.Card, community []cards.Card) (best uint32, power uint64
 	best = 0
 	for _, combination := range card7.Combinations {
 		bits := combination[0]
-		handBits, suitBits := common.Pick(fullHand, combination[1:], common.HighRanks)
+		handBits, suitBits := common.Pick(fullHand, combination, common.HighRanks)
 		currentPower := common.Std52HighPower(handBits, suitBits != 0)
 		if currentPower > power {
 			best = bits
