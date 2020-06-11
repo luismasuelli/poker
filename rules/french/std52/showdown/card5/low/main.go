@@ -2,7 +2,6 @@ package low
 
 import (
 	"github.com/luismasuelli/poker-go/assets/cards"
-	"github.com/luismasuelli/poker-go/assets/cards/french"
 	"github.com/luismasuelli/poker-go/rules/french/std52/showdown/common"
 )
 
@@ -15,10 +14,7 @@ import (
 // the involved cards (in this case: just the hand
 // cards) are needed.
 func Power(hand []cards.Card, community []cards.Card) (best uint32, power uint64) {
-	rankBits := uint64(0)
-	for _, card := range hand {
-		rankBits += common.LowballRanks[common.Ranks[card.(french.Card)]]
-	}
+	rankBits, _ := common.PickAll(hand, common.LowballRanks)
 	power = common.Std52LowballPower(rankBits)
 	best = 0b11111
 	return
