@@ -1,0 +1,26 @@
+TODO implement this all.
+
+The only thing we care about is they have the following features to manage their identity and money:
+
+- Identity() Anything: Arbitrary data representing the player's identity, both for presenting the
+  player and internal matching of the player against, say, queries.
+- Get(key Any) uint64: Gets the count of a given asset. The asset may be anything although the
+  servers implement at least two: real money, and fictional money. Others may implement a system
+  of tickets.
+- Add(key Any, count uint64) (uint64, bool): Adds a certain quantity, for a given asset, to a given player.
+  It will return the new total quantity for such asset, and whether it could add the quantity or not.
+  The only reason to not be able to add the quantity, is when the final value overflows uin64.
+- Sub(key Any, count uint64) (uint64, bool): Subtracts a certain quantity, for a given asset, to a given
+  player. It will return the new total quantity for such asset, and whether it could add the quantity
+  or not (the only reason to not be able to subtract the quantity is if the player cannot afford it).
+- Notify(message Message): Notifies the player. `Message` is a particular type of this engine. Player
+  implementations should know how to handle this, as Messages provide a mean to know which message
+  responds to which command they issued. Typically, a message may contain stuff like:
+  - The original request ID, if the message is a response to a command.
+  - The seat, if the message is provided in the context of a particular game being played.
+  - The player engine, general-purpose and always provided.
+  - The message data like (command, args, kwargs).
+
+Something is needed in order to fulfill this contract: The implementations must be concurrency-safe
+for the Get, Add, and Sub methods. This said, nothing is known by the engines about the players beyond
+these interfaces (e.g. persistence and so).
