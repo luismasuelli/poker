@@ -1,4 +1,4 @@
-package french
+package spanish
 
 var faces = [64]string{
 	"1c", "2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Sc", "Cc", "Rc",
