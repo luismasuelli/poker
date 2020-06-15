@@ -71,3 +71,8 @@ func (gate *Gate) Is(value interface{}) bool {
 func (gate *Gate) Wait() {
 	gate.waitGroup.Wait()
 }
+
+// Creates a new Gate, ready to be used, empty.
+func NewGate() *Gate {
+	return &Gate{map[interface{}]bool{}, WaitGroup{}, Mutex{}}
+}
