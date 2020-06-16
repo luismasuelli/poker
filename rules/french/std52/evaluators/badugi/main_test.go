@@ -1,8 +1,8 @@
 package badugi
 
 import (
-	"github.com/luismasuelli/poker-go/assets/cards"
-	. "github.com/luismasuelli/poker-go/assets/cards/french"
+	"github.com/luismasuelli/poker-go/engine/games/cards"
+	. "github.com/luismasuelli/poker-go/engine/games/cards/french"
 	"testing"
 )
 
