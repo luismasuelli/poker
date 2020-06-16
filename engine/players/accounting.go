@@ -1,6 +1,8 @@
 package players
 
-import "github.com/luismasuelli/poker-go/engine"
+import (
+	"github.com/luismasuelli/poker-go/engine/assets"
+)
 
 // Accounting involves managing players' assets and
 // tracking those players by their assets. Assets
@@ -12,6 +14,9 @@ import "github.com/luismasuelli/poker-go/engine"
 //
 // This contract allows getting, adding, subtracting
 // and checking among different types of assets.
+//
+// Working with nil assets is not defined, and should
+// panic.
 type Accounting interface {
 	// Gets all the (accounting) players having a
 	// particular ticket among their assets. By
@@ -21,14 +26,16 @@ type Accounting interface {
 	// tickets (which go for a specific tournament
 	// which will NOT repeat) and not for general
 	// tickets (which may have multiple purposes.
-	FindHaving(ticketID engine.AssetID) []Accounting
+	// It is not allowed to use a currency-typed
+	// asset, and should panic.
+	FindHaving(asset assets.Asset) []Accounting
 	// Gets how many of an asset this users has.
 	// If the asset does not exist, this method
 	// must return 0, false. If the asset exists
 	// but the player has none, this method must
 	// return 0, true. Otherwise, the result must
 	// be (quantity), true.
-	Get(assetType engine.AssetType, assetID engine.AssetID) (uint64, bool)
+	Get(asset assets.Asset) (uint64, bool)
 	// Adds some amount to a particular currency
 	// among the player's assets. THIS METHOD MUST
 	// PANIC ON OVERFLOW, and is responsibility of
@@ -37,7 +44,7 @@ type Accounting interface {
 	// getting money to the point of overflowing.
 	// This method should issue a durable command
 	// and be concurrency-safe.
-	Add(assetType engine.AssetType, assetID engine.AssetID, amount uint64)
+	Add(asset assets.Asset, amount uint64)
 	// Tries to take some amount from a particular
 	// asset. If the player can afford it, this
 	// method will return true and subtract the
@@ -46,5 +53,5 @@ type Accounting interface {
 	// afford that amount to take, this method
 	// returns false. This method should issue a
 	// durable command and be concurrency-safe.
-	Take(assetType engine.AssetType, assetID engine.AssetID, amount uint64)
+	Take(asset assets.Asset, amount uint64)
 }
