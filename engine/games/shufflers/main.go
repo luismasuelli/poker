@@ -1,6 +1,6 @@
 package shufflers
 
-import "github.com/luismasuelli/poker-go/rules"
+import "github.com/luismasuelli/poker-go/engine/games/rules"
 
 // Shufflers provide only one method to shuffle any
 // given deck (regardless the deck type). The
