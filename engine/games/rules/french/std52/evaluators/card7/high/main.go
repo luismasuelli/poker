@@ -2,8 +2,8 @@ package high
 
 import (
 	"github.com/luismasuelli/poker-go/engine/games/cards"
-	"github.com/luismasuelli/poker-go/rules/french/std52/evaluators/card7"
-	"github.com/luismasuelli/poker-go/rules/french/std52/evaluators/common"
+	"github.com/luismasuelli/poker-go/engine/games/rules/french/std52/evaluators/card7"
+	"github.com/luismasuelli/poker-go/engine/games/rules/french/std52/evaluators/common"
 )
 
 // Computes the best power (and best cards combinations) of the given 7 cards.

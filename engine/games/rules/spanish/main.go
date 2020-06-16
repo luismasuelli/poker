@@ -1,19 +1,19 @@
-package french
+package spanish
 
 import (
 	"github.com/luismasuelli/poker-go/engine/games/cards"
-	"github.com/luismasuelli/poker-go/engine/games/cards/french"
-	"github.com/luismasuelli/poker-go/rules"
+	"github.com/luismasuelli/poker-go/engine/games/cards/spanish"
+	"github.com/luismasuelli/poker-go/engine/games/rules"
 )
 
-// A standard french deck contains a sequence of standard french
-// cards, and will act on it, change it, and so.
+// A standard spanish deck contains a sequence of standard
+// spanish cards, and will act on it, change it, and so.
 type Deck struct {
-	cards []french.Card
+	cards []spanish.Card
 }
 
-// Creates a deck with the given french cards.
-func NewDeck(cards ...french.Card) *Deck {
+// Creates a deck with the given spanish cards.
+func NewDeck(cards ...spanish.Card) *Deck {
 	return &Deck{
 		cards: cards,
 	}
@@ -26,7 +26,7 @@ func (deck *Deck) Len() int {
 
 // Returns a copy of the current deck.
 func (deck *Deck) Copy() rules.Deck {
-	currentCards := make([]french.Card, len(deck.cards))
+	currentCards := make([]spanish.Card, len(deck.cards))
 	copy(currentCards, deck.cards)
 	return &Deck{cards: currentCards}
 }
@@ -73,10 +73,10 @@ func (deck *Deck) Stack(cards []cards.Card) {
 		return
 	}
 
-	newCards := make([]french.Card, newLength+baseLength)
+	newCards := make([]spanish.Card, newLength+baseLength)
 	copy(newCards, deck.cards)
 	for index := 0; index < newLength; index++ {
-		newCards[baseLength+index] = cards[index].(french.Card)
+		newCards[baseLength+index] = cards[index].(spanish.Card)
 	}
 
 	deck.cards = newCards
@@ -92,9 +92,9 @@ func (deck *Deck) Queue(cards []cards.Card) {
 		return
 	}
 
-	newCards := make([]french.Card, newLength+baseLength)
+	newCards := make([]spanish.Card, newLength+baseLength)
 	for index := 0; index < newLength; index++ {
-		newCards[newLength-1-index] = cards[index].(french.Card)
+		newCards[newLength-1-index] = cards[index].(spanish.Card)
 	}
 	copy(newCards[newLength:newLength+baseLength], deck.cards)
 
