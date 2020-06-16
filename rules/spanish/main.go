@@ -1,8 +1,8 @@
 package spanish
 
 import (
-	"github.com/luismasuelli/poker-go/assets/cards"
-	"github.com/luismasuelli/poker-go/assets/cards/spanish"
+	"github.com/luismasuelli/poker-go/engine/games/cards"
+	"github.com/luismasuelli/poker-go/engine/games/cards/spanish"
 	"github.com/luismasuelli/poker-go/rules"
 )
 

@@ -1,7 +1,7 @@
 package low
 
 import (
-	"github.com/luismasuelli/poker-go/assets/cards"
+	"github.com/luismasuelli/poker-go/engine/games/cards"
 	"github.com/luismasuelli/poker-go/rules/french/std52/evaluators/card7"
 	"github.com/luismasuelli/poker-go/rules/french/std52/evaluators/common"
 )
