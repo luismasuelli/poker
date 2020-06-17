@@ -3,7 +3,6 @@ package french
 import (
 	"github.com/luismasuelli/poker-go/engine/games/cards"
 	"github.com/luismasuelli/poker-go/engine/games/cards/french"
-	"github.com/luismasuelli/poker-go/engine/games/rules"
 )
 
 // A standard french deck contains a sequence of standard french
@@ -25,7 +24,7 @@ func (deck *Deck) Len() int {
 }
 
 // Returns a copy of the current deck.
-func (deck *Deck) Copy() rules.Deck {
+func (deck *Deck) Copy() cards.Deck {
 	currentCards := make([]french.Card, len(deck.cards))
 	copy(currentCards, deck.cards)
 	return &Deck{cards: currentCards}
@@ -49,9 +48,9 @@ func (deck *Deck) Peek(n int) []cards.Card {
 	baseLength := len(deck.cards)
 
 	if n < 1 {
-		panic(rules.ErrDealBadCount)
+		panic(cards.ErrDealBadCount)
 	} else if n > baseLength {
-		panic(rules.ErrDealNotEnough)
+		panic(cards.ErrDealNotEnough)
 	} else {
 		newLength := baseLength - n
 		source := deck.cards[newLength:baseLength]

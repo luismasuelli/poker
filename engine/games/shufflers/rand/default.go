@@ -1,7 +1,7 @@
 package rand
 
 import (
-	"github.com/luismasuelli/poker-go/engine/games/rules"
+	"github.com/luismasuelli/poker-go/engine/games/cards"
 	"math/rand"
 	"time"
 )
@@ -16,7 +16,7 @@ type DefaultShuffler struct {
 
 // Shuffles a deck using its Len and Swap methods
 // in the underlying rand object.
-func (shuffler *DefaultShuffler) Shuffle(deck rules.Deck) {
+func (shuffler *DefaultShuffler) Shuffle(deck cards.Deck) {
 	if shuffler.timeSeed {
 		rand.Seed(time.Now().UTC().UnixNano())
 	}

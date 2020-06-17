@@ -1,8 +1,7 @@
-package rules
+package cards
 
 import (
 	"errors"
-	"github.com/luismasuelli/poker-go/engine/games/cards"
 )
 
 // Raised by panic when attempting to deal < 1 cards.
@@ -37,7 +36,7 @@ type Deck interface {
 	// it unstacks the last cards). The cards are
 	// returned in unstacked order (i.e. reverse
 	// of the stack order).
-	Deal(int) []cards.Card
+	Deal(int) []Card
 	// Peeks cards from the top of the deck (i.e.
 	// it unstacks the last cards). The cards are
 	// returned in unstacked order (i.e. reverse
@@ -45,19 +44,19 @@ type Deck interface {
 	// Deal(int) is that this method does not
 	// actually remove the cards, but anticipates
 	// or simulates it.
-	Peek(int) []cards.Card
+	Peek(int) []Card
 	// Returns cards to the top of the deck (i.e.
 	// it stacks them back onto the deck), one by
 	// one in the order they are given. It must
 	// panic if at least one card is of unexpected
 	// type, or nil. It must be a no-op on empty
 	// or nil array.
-	Stack([]cards.Card)
+	Stack([]Card)
 	// Returns cards to the bottom of the deck
 	// (i.e. it queues them back to the bottom
 	// of the deck), one by one in the order
 	// they are given. It must panic if at least
 	// one card is of unexpected type, or nil. It
 	// must be a no-op on empty or nil array.
-	Queue([]cards.Card)
+	Queue([]Card)
 }
