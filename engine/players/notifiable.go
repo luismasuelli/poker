@@ -16,6 +16,6 @@ type Notifiable interface {
 	// The data to send involves a code and optional
 	// keyword arguments, and the notify operation
 	// must not block for long time.
-	Notify(gameID engine.GameID, tableID engine.TableID, seatID engine.SeatID, requestID engine.RequestID,
+	Notify(gameID interface{}, tableID engine.TableID, seatID engine.SeatID, requestID engine.RequestID,
 		   code string, data map[string]interface{})
 }
