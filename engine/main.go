@@ -14,8 +14,3 @@ type SeatID uint8
 // can be tracked in future messages. RequestID 0 means "no request
 // in particular" and should never be used, to avoid confusion.
 type RequestID uint64
-
-// Assets are registered under a special registry (specially for
-// tickets, which will be a lot, with custom caption and for
-// several different tournaments and promos).
-type AssetID string
