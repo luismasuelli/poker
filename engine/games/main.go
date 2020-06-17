@@ -22,6 +22,12 @@ const (
 // restarted later. Tournaments, on the other
 // hand, do not last forever. They end, and will
 // not be created again.
+//
+// ANY change in games and/or tables must issue
+// durable commands to store their new inner
+// (in-game) state. This stands for actually
+// ANY change in the game: shuffled decks, cards
+// being dealt, and hand pots.
 type Game interface {
 	ID()        interface{}
 	Caption()   string
