@@ -1,6 +1,9 @@
 package seats
 
-import "github.com/luismasuelli/poker-go/engine/players"
+import (
+	"github.com/luismasuelli/poker-go/engine/games/cards"
+	"github.com/luismasuelli/poker-go/engine/players"
+)
 
 // Status of a seat during a game.
 type Status uint32
@@ -33,16 +36,20 @@ const (
 	SitOut Flags = 1
 )
 
+// Interfaces for a seat. There are
+// several different rules for the seats,
+// depending mostly on the game rule (e.g.
+// games with blinds, or not).
 type Seat interface {
 	// Data to be retrieved.
 	// The player.
 	Player() players.Player
 	// The stack.
-	Stack()  uint64
+	Stack() uint64
 	// The status.
 	Status() Status
 	// The flags.
-	Flags()  Flags
+	Flags() Flags
 
 	// Sits a player, if empty.
 	Sit(player players.Player, stack uint64) bool
@@ -61,6 +68,53 @@ type Seat interface {
 	GiveChips(chips uint64) bool
 	// Sets stack, if occupied.
 	SetStack(chips uint64) bool
+	// Adds cards to the hand.
+	AddCards(seatCards []*SeatCard) bool
+	// Takes cards (by indices) from the hand.
+	RemoveCards(indices []int)
+	// Gets the actual cards.
+	RevealedCards() []cards.Card
+}
+
+// A card in a seat. Players will have
+// cards (the number varies with the
+// game), which at different points or
+// according to different rules, will
+// be covered or shown to the table.
+type SeatCard struct {
+	card  cards.Card
+	shown bool
+}
+
+// Marks the card as shown.
+func (seatCard *SeatCard) Show() {
+	seatCard.shown = true
+}
+
+// Marks the card as hidden.
+func (seatCard *SeatCard) Hide() {
+	seatCard.shown = false
+}
+
+// Tells whether the card is shown or
+// not.
+func (seatCard *SeatCard) Shown() bool {
+	return seatCard.shown
+}
+
+// Tells the underlying card.
+func (seatCard *SeatCard) Card() cards.Card {
+	return seatCard.card
+}
+
+// Creates a new seat card (hidden).
+func NewSeatCard(card cards.Card) *SeatCard {
+	return &SeatCard{card, false}
+}
+
+// Creates a new seat card (shown).
+func NewSeatShownCard(card cards.Card) *SeatCard {
+	return &SeatCard{card, true}
 }
 
 // Seats are managed by the tables. They
@@ -78,6 +132,7 @@ type BaseSeat struct {
 	status Status
 	flags  Flags
 	stack  uint64
+	cards  []*SeatCard
 }
 
 // Gets the underlying sit player.
@@ -132,6 +187,7 @@ func (seat *BaseSeat) Pop() (player players.Player, stack uint64) {
 	seat.stack = 0
 	seat.status = Free
 	seat.flags = Nothing
+	seat.cards = make([]*SeatCard, 0)
 	return
 }
 
@@ -213,4 +269,57 @@ func (seat *BaseSeat) SetStack(chips uint64) bool {
 		seat.stack = chips
 		return true
 	}
+}
+
+// Adds non-nil cards.
+func (seat *BaseSeat) AddCards(seatCards []*SeatCard) bool {
+	if len(seatCards) == 0 {
+		return true
+	}
+
+	for _, seatCard := range seatCards {
+		if seatCard == nil || seatCard.Card() == nil {
+			return false
+		}
+	}
+
+	seat.cards = append(seat.cards, seatCards...)
+	return true
+}
+
+// Removes cards by indices. A []int{-1} array
+// clears the hand.
+func (seat *BaseSeat) RemoveCards(indices []int) {
+	// Test []int{-1} special case.
+	if len(indices) == 1 && indices[0] < 0 {
+		seat.cards = make([]*SeatCard, 0)
+		return
+	}
+
+	cardsLen := len(seat.cards)
+	indicesSet := map[int]bool{}
+	for _, index := range indices {
+		if index < cardsLen && index >= 0 {
+			indicesSet[index] = true
+		}
+	}
+
+	newCards := make([]*SeatCard, cardsLen-len(indicesSet))
+	newIndex := 0
+	for index, card := range seat.cards {
+		if _, ok := indicesSet[index]; !ok {
+			newCards[newIndex] = card
+			newIndex++
+		}
+	}
+	seat.cards = newCards
+}
+
+// Gets the actual cards from the seat.
+func (seat *BaseSeat) RevealedCards() []cards.Card {
+	cards := make([]cards.Card, len(seat.cards))
+	for index, seatCard := range seat.cards {
+		cards[index] = seatCard.Card()
+	}
+	return cards
 }
