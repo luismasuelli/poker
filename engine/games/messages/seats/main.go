@@ -1,6 +1,7 @@
 package seats
 
 import (
+	"github.com/luismasuelli/poker-go/engine/games/cards"
 	"github.com/luismasuelli/poker-go/engine/games/messages/tables"
 	"github.com/luismasuelli/poker-go/engine/games/tables/seats"
 )
@@ -71,4 +72,40 @@ type SeatStackHasShrank struct {
 type SeatStackHasChanged struct {
 	SeatMessage
 	FinalStack uint64
+}
+
+// Tells when a seat received cards,
+// which may be revealed or nil. This
+// message stands both for initial
+// cards and additional drawn cards
+// for "draw" modes.
+type SeatDrewCards struct {
+	SeatMessage
+	Cards []cards.Card
+}
+
+// Tells when a seat gives N cards.
+// Intended for "draw" modes only.
+type SeatGaveCards struct {
+	SeatMessage
+	Count int
+}
+
+// Tells when client's seat received
+// cards, which will always be revealed
+// but with the "hidden/revealed" flags
+// to know how to hint the cards as
+// being available to the client but
+// hidden to others.
+type YouDrewCards struct {
+	SeatMessage
+	Cards []cards.Card
+	Shown []bool
+}
+
+// Tells when client's seat gave some
+// cards, and which indices in particular.
+// Intended for "draw" games.
+type YouGaveCards struct {
+	Indices []int
 }
