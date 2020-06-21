@@ -107,5 +107,6 @@ type YouDrewCards struct {
 // cards, and which indices in particular.
 // Intended for "draw" games.
 type YouGaveCards struct {
+	SeatMessage
 	Indices []int
 }
