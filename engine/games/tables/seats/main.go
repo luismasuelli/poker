@@ -73,7 +73,7 @@ type Seat interface {
 	// Takes cards (by indices) from the hand.
 	RemoveCards(indices []int)
 	// Gets the actual cards.
-	RevealedCards() []cards.Card
+	Cards(revealed bool) []cards.Card
 }
 
 // A card in a seat. Players will have
@@ -102,9 +102,16 @@ func (seatCard *SeatCard) Shown() bool {
 	return seatCard.shown
 }
 
-// Tells the underlying card.
-func (seatCard *SeatCard) Card() cards.Card {
-	return seatCard.card
+// Tells which card to show. If the card
+// is already shown, return it. Also if
+// the card is told to be revealed, then
+// also return it. Otherwise, return nil.
+func (seatCard *SeatCard) Card(revealed bool) cards.Card {
+	if revealed || seatCard.Shown() {
+		return seatCard.card
+	} else {
+		return nil
+	}
 }
 
 // Creates a new seat card (hidden).
@@ -316,10 +323,10 @@ func (seat *BaseSeat) RemoveCards(indices []int) {
 }
 
 // Gets the actual cards from the seat.
-func (seat *BaseSeat) RevealedCards() []cards.Card {
+func (seat *BaseSeat) Cards(revealed bool) []cards.Card {
 	cards := make([]cards.Card, len(seat.cards))
 	for index, seatCard := range seat.cards {
-		cards[index] = seatCard.Card()
+		cards[index] = seatCard.Card(revealed)
 	}
 	return cards
 }
