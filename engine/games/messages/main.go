@@ -6,4 +6,8 @@ type Message struct {
 	// actions).
 	Reason  string
 	Details interface{}
+	// Some messages can be in response to other
+	// messages sent by client. A value of 0
+	// means this message is not replying-
+	ReplyingTo uint64
 }
