@@ -63,11 +63,17 @@ type Seat interface {
 	// Clears a flag.
 	ClearFlag(flag Flags) bool
 	// Takes chips, if occupied and affordable.
-	TakeChips(chips uint64) bool
+	SubStack(chips uint64) bool
 	// Gives chips, if occupied and not overflowing.
-	GiveChips(chips uint64) bool
+	AddStack(chips uint64) bool
 	// Sets stack, if occupied.
 	SetStack(chips uint64) bool
+	// Takes chips from the pot, if occupied and affordable.
+	SubPot(chips uint64) bool
+	// Gives chips to the pot, if occupied and not overflowing.
+	AddPot(chips uint64) bool
+	// Sets pot, if occupied.
+	SetPot(chips uint64) bool
 	// Adds cards to the hand.
 	AddCards(seatCards []*SeatCard) bool
 	// Takes cards (by indices) from the hand.
@@ -139,6 +145,7 @@ type BaseSeat struct {
 	status Status
 	flags  Flags
 	stack  uint64
+	pot    uint64
 	cards  []*SeatCard
 }
 
@@ -150,6 +157,12 @@ func (seat *BaseSeat) Player() players.Player {
 // Gets the stack of this seat.
 func (seat *BaseSeat) Stack() uint64 {
 	return seat.stack
+}
+
+// Gets the current pot of this seat,
+// for when bets are being made.
+func (seat *BaseSeat) Pot() uint64 {
+	return seat.pot
 }
 
 // Returns the status of a seat. There are
@@ -239,7 +252,7 @@ func (seat *BaseSeat) ClearFlag(flag Flags) bool {
 // Takes chips from the seat. This can only
 // be done to non-free seats that can afford
 // the specified chips amount.
-func (seat *BaseSeat) TakeChips(chips uint64) bool {
+func (seat *BaseSeat) SubStack(chips uint64) bool {
 	if seat.player == nil || seat.stack < chips {
 		return false
 	} else {
@@ -254,7 +267,7 @@ func (seat *BaseSeat) TakeChips(chips uint64) bool {
 // recommended that table levels and user
 // accounts are defensively restricted to
 // reach a case like this.
-func (seat *BaseSeat) GiveChips(chips uint64) bool {
+func (seat *BaseSeat) AddStack(chips uint64) bool {
 	if seat.player == nil || seat.stack > (^(uint64(0) - chips)) {
 		return false
 	} else {
@@ -274,6 +287,49 @@ func (seat *BaseSeat) SetStack(chips uint64) bool {
 		return false
 	} else {
 		seat.stack = chips
+		return true
+	}
+}
+
+// Takes chips from the seat's pot. This can
+// only be done to non-free seats that can
+// afford the specified chips amount from their
+// pots.
+func (seat *BaseSeat) SubPot(chips uint64) bool {
+	if seat.player == nil || seat.pot < chips {
+		return false
+	} else {
+		seat.pot -= chips
+		return true
+	}
+}
+
+// Gives chips to the seat's pot. This can
+// only be done to non-free seats that can
+// receive the amount without overflowing.
+// It is recommended that table levels and
+// user accounts are defensively restricted
+// to reach a case like this.
+func (seat *BaseSeat) AddPot(chips uint64) bool {
+	if seat.player == nil || seat.pot > (^(uint64(0) - chips)) {
+		return false
+	} else {
+		seat.pot += chips
+		return true
+	}
+}
+
+// Sets the pot to the seat. This can only
+// be done to non-free seats, and care should
+// be taken when calling this method, since it
+// may cause overflow as well when receiving
+// more money or popping the seat in a cash
+// 1-table game.
+func (seat *BaseSeat) SetPot(chips uint64) bool {
+	if seat.player == nil {
+		return false
+	} else {
+		seat.pot = chips
 		return true
 	}
 }
