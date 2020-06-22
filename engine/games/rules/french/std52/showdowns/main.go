@@ -1,6 +1,9 @@
 package showdowns
 
-import "github.com/luismasuelli/poker-go/engine/games/tables/seats"
+import (
+	"github.com/luismasuelli/poker-go/engine/games/tables/seats"
+	"github.com/luismasuelli/poker-go/engine/games/tables/pots"
+)
 
 // When showdown resolves, a structure of winners
 // and losers will be determined. First, one has
@@ -20,7 +23,7 @@ import "github.com/luismasuelli/poker-go/engine/games/tables/seats"
 // the lower indices are the ones showing their hands
 // first, which means giving away more information
 // and so they deserve the remaining chips).
-type PotTie []seats.Seat
+type PodiumPosition []seats.Seat
 
 // These are the full showdown-ranked players. Each
 // index will have one or more tying sit players, with
@@ -30,17 +33,23 @@ type PotTie []seats.Seat
 // seats will be included in this ranking (which usually
 // means at most 9 seats in total, and at most 4 seats
 // per "tie" level).
-type PotPlayers []PotTie
+type Podium []PodiumPosition
 
 // Different games have different showdown modes.
 type ShowdownMode uint8
 
-// A complete showdown result involves all the available
+// A complete showdown podium involves all the available
 // modes. Standard poker games have only one entry in
 // this dictionary, while hi/lo games have two entries
 // if low hand (8/better) is available, and pai gow games
 // have two permanent entries.
-type Showdown map[ShowdownMode]PotPlayers
+type ShowdownRanks map[ShowdownMode]Podium
+
+// When a complete showdown podium is given, the showdown
+// process will also have a mean to split all the existing
+// pots among the available showdown modes. Each main or
+// side pot will be split accordingly.
+type ShowdownPots map[ShowdownMode][]*pots.Pot
 
 const (
 	// Standard showdowns are used when
