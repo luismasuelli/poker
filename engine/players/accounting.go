@@ -31,27 +31,27 @@ type Accounting interface {
 	FindHaving(asset assets.Asset) []Accounting
 	// Gets how many of an asset this users has.
 	// If the asset does not exist, this method
-	// must return 0, false. If the asset exists
+	// must return 0, error. If the asset exists
 	// but the player has none, this method must
-	// return 0, true. Otherwise, the result must
-	// be (quantity), true.
-	Get(asset assets.Asset) (uint64, bool)
+	// return 0, nil. Otherwise, the result must
+	// be (quantity), nil.
+	Get(asset assets.Asset) (uint64, error)
 	// Adds some amount to a particular currency
-	// among the player's assets. THIS METHOD MUST
-	// PANIC ON OVERFLOW, and is responsibility of
-	// the developer to disallow actions or entries
-	// to games that could imply the user risks
-	// getting money to the point of overflowing.
-	// This method should issue a durable command
-	// and be concurrency-safe.
-	Add(asset assets.Asset, amount uint64)
+	// among the player's assets. This method must
+	// return an error on overflow, and it is
+	// responsibility of the developer to disallow
+	// actions or entries to games that could imply
+	// the user risks getting money to the point of
+	// overflowing. This method should issue a
+	// durable command and be concurrency-safe.
+	Add(asset assets.Asset, amount uint64) error
 	// Tries to take some amount from a particular
 	// asset. If the player can afford it, this
-	// method will return true and subtract the
+	// method will return nil and subtract the
 	// quantity from the underlying asset. If the
 	// asset does not exist or the player cannot
 	// afford that amount to take, this method
-	// returns false. This method should issue a
-	// durable command and be concurrency-safe.
-	Take(asset assets.Asset, amount uint64)
+	// returns an error. This method should issue
+	// a durable command and be concurrency-safe.
+	Take(asset assets.Asset, amount uint64) error
 }
