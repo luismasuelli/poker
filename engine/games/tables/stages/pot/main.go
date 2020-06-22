@@ -2,11 +2,11 @@ package pot
 
 import (
 	"github.com/luismasuelli/poker-go/engine/games/tables/environment"
-	"github.com/luismasuelli/poker-go/engine/games/tables/stages/resolution"
 	"github.com/luismasuelli/poker-go/engine/games/tables/pots"
 	"github.com/luismasuelli/poker-go/engine/games/messages/games"
-	"github.com/luismasuelli/poker-go/engine/games/messages/tables"
-	"github.com/luismasuelli/poker-go/engine/games/messages/tables/seats"
+	"github.com/luismasuelli/poker-go/engine/games/rules/french/std52/showdowns"
+	"github.com/luismasuelli/poker-go/engine/games/messages/games/tables"
+	"github.com/luismasuelli/poker-go/engine/games/messages/games/tables/seats"
 )
 
 // Awards all the given pots to their winners. The
@@ -19,9 +19,11 @@ import (
 // For each showdown in certain hand (corresponding
 // to certain table / game) this function is called
 // exactly once (which could be twice in hi/lo modes).
-func AwardPots(winners resolution.PotWinners, pots []*pots.Pot, gameID interface{}, tableID uint32, handID uint64,
-	           messageFactory func(playerDisplay interface{}, handID uint64, potIndex int, prize uint64) interface{},
-               broadcaster *environment.Broadcaster) {
+//
+// The seats among pot players are active/all-in that
+// did not muck their hands.
+func AwardModePots(gameID interface{}, tableID uint32, handID uint64, mode showdowns.ShowdownMode,
+                   pots []*pots.Pot, potPlayers showdowns.PotPlayers, broadcaster *environment.Broadcaster) {
     // Iterate over all the side pots (and the
     // main point) for a given showdown.
     for potIndex, pot := range pots {
@@ -29,8 +31,8 @@ func AwardPots(winners resolution.PotWinners, pots []*pots.Pot, gameID interface
     	// The first one having at least one seat
     	// committed with this pot, earn[s] the pot
     	// since it is/are the winner[s].
-		for _, tyingSeats := range winners {
-			involvedWinners, amount, remainder := pot.Split(tyingSeats)
+		for _, tyingSeats := range potPlayers {
+			involvedWinners, amount, remainder := pot.Award(tyingSeats)
 			if len(involvedWinners) != 0 {
 				// Divide this pot, and break.
 				for index, seat := range involvedWinners {
@@ -57,14 +59,17 @@ func AwardPots(winners resolution.PotWinners, pots []*pots.Pot, gameID interface
 							tableID,
 							seats.SeatMessage{
 								seatID,
-								messageFactory(display, handID, potIndex, prize),
+								seats.PlayerWonChips{
+									display, handID, mode,
+									uint8(potIndex), prize,
+								},
 							},
 						},
 					})
 				}
 				break
 			}
-			// Otherwise, keep looking among the winners'
+			// Otherwise, keep looking among the potPlayers'
 			// "levels" until at least one player, in the
 			// same level, can claim the pot.
 		}
