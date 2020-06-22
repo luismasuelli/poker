@@ -37,13 +37,28 @@ func (pot *Pot) SeatHasLeft(seat seats.Seat) {
 }
 
 // Divides equally the amount of the pot among
-// all the involved, and remaining active or
-// remaining, seats. If there are remainder
-// chips, the amount of them will be returned
-// in the second return result.
-func (pot *Pot) Split() (uint64, uint8) {
-	size := uint64(len(pot.seats))
-	divided := pot.amount / size
-	remainder := uint8(pot.amount % size )
-	return divided, remainder
+// the winners that are involved with this pot.
+// An intersection of such players is considered,
+// and the money is divided among them. If no
+// given winners are involved in this pot, then
+// the result is (0, 0).
+func (pot *Pot) Split(winners []seats.Seat) (map[seats.Seat]bool, uint64, uint8) {
+	// Compute intersections to keep only the
+	// players that are both winners and also
+	// involved in the pot.
+	involvedWinners := map[seats.Seat]bool{}
+	for _, winner := range winners {
+		if _, ok := pot.seats[winner]; ok {
+			involvedWinners[winner] = true;
+		}
+	}
+
+	size := uint64(len(involvedWinners))
+	if size == 0 {
+		return nil, 0, 0
+	} else {
+		divided := pot.amount / size
+		remainder := uint8(pot.amount % size )
+		return involvedWinners, divided, remainder
+	}
 }
