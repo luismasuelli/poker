@@ -1,12 +1,13 @@
 package tables
 
-import "github.com/luismasuelli/poker-go/engine/games/messages/games"
-
-// Messages related to a table will hold their
-// game ID and table ID. This is only meaningful
-// when a user is actually observing a table
-// status.
+// Table messages will be related to a
+// table (in a particular game - this
+// table message will be wrapped in a
+// game message).
 type TableMessage struct {
-	games.GameMessage
+	// The table ID.
 	TableID uint32
+
+	// The content of this table message.
+	Content interface{}
 }
