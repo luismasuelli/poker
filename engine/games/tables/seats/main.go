@@ -43,6 +43,7 @@ const (
 // games with blinds, or not).
 type Seat interface {
 	// Data to be retrieved.
+	SeatID() uint8
 	// The player.
 	Player() players.Player
 	// The stack.
@@ -132,12 +133,18 @@ func NewSeatShownCard(card cards.Card) *SeatCard {
 // related to the algorithm for blinds
 // management (simple, moving, or dead).
 type BaseSeat struct {
+	seatID uint8
 	player players.Player
 	status Status
 	flags  Flags
 	stack  uint64
 	pot    uint64
 	cards  []*SeatCard
+}
+
+// Gets the seat ID.
+func (seat *BaseSeat) SeatID() uint8 {
+	return seat.seatID
 }
 
 // Gets the underlying sit player.
