@@ -1,22 +1,24 @@
 package broadcasters
 
-import "github.com/luismasuelli/poker-go/engine/players"
+import (
+	"github.com/luismasuelli/poker-go/engine/misc"
+)
 
 // Broadcasts a given message to all
 // the listeners watching a table.
 // Meant to be used inside a table.
 type WatchersBroadcaster struct {
-	watchers map[players.Notifiable]bool
+	watchers map[misc.Notifiable]bool
 }
 
 // Creates a new watchers broadcaster.
 func NewWatchersBroadcaster() *WatchersBroadcaster {
-	return &WatchersBroadcaster{map[players.Notifiable]bool{}}
+	return &WatchersBroadcaster{map[misc.Notifiable]bool{}}
 }
 
 // Registers a new watcher. Returns false
 // if already registered, or nil.
-func (watchersBroadcaster *WatchersBroadcaster) Register(watcher players.Notifiable) bool {
+func (watchersBroadcaster *WatchersBroadcaster) Register(watcher misc.Notifiable) bool {
 	if watcher == nil {
 		return false
 	} else if _, ok := watchersBroadcaster.watchers[watcher]; ok {
@@ -28,7 +30,7 @@ func (watchersBroadcaster *WatchersBroadcaster) Register(watcher players.Notifia
 }
 
 // Unregisters a watcher. Returns false if absent.
-func (watchersBroadcaster *WatchersBroadcaster) Unregister(watcher players.Notifiable) bool {
+func (watchersBroadcaster *WatchersBroadcaster) Unregister(watcher misc.Notifiable) bool {
 	if _, ok := watchersBroadcaster.watchers[watcher]; !ok {
 		return false
 	} else {
