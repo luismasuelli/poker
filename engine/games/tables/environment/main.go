@@ -8,18 +8,16 @@ import (
 // Combines the seats and watchers
 // broadcasters in just one.
 type Broadcaster struct {
-	seats []seats.Seat
+	seats    []seats.Seat
 	watchers map[misc.Notifiable]bool
+	parent   misc.Notifiable
 }
 
 // Creates a new environment broadcaster with
 // the involved seats and an empty list of
 // watchers.
-func NewBroadcaster(seats []seats.Seat) *Broadcaster {
-	return &Broadcaster{
-		seats,
-		map[misc.Notifiable]bool{},
-	}
+func NewBroadcaster(seats []seats.Seat, parent misc.Notifiable) *Broadcaster {
+	return &Broadcaster{seats, map[misc.Notifiable]bool{}, parent}
 }
 
 // Notifies to both sit players and watchers.
@@ -38,6 +36,7 @@ func (broadcaster *Broadcaster) Notify(message interface{}) {
 			watcher.Notify(message)
 		}()
 	}
+	broadcaster.parent.Notify(message)
 }
 
 // Registers a new watcher. Returns false
