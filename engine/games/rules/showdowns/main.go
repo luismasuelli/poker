@@ -36,26 +36,26 @@ type PodiumPosition []seats.Seat
 type Podium []PodiumPosition
 
 // Different games have different showdown modes.
-type ShowdownMode uint8
+type Mode uint8
 
 // A complete showdown podium involves all the available
 // modes. Standard poker games have only one entry in
 // this dictionary, while hi/lo games have two entries
 // if low hand (8/better) is available, and pai gow games
 // have two permanent entries.
-type ShowdownRanks map[ShowdownMode]Podium
+type Podiums map[Mode]Podium
 
 // When a complete showdown podium is given, the showdown
 // process will also have a mean to split all the existing
 // pots among the available showdown modes. Each main or
 // side pot will be split accordingly.
-type ShowdownPots map[ShowdownMode][]*pots.Pot
+type Pots map[Mode][]*pots.Pot
 
 const (
 	// Standard showdowns are used when
 	// game rules have only one showdown
 	// mode.
-	Standard ShowdownMode = iota
+	Standard Mode = iota
 	// "High" and "Low" showdowns are used
 	// in Hi/Lo games like Stud and Omaha.
 	High
@@ -67,4 +67,4 @@ const (
 )
 
 // All the modes to check / iterate for each hand.
-var ModesToCheck = []ShowdownMode{Standard, High, Low, Front, Back}
+var ModesToCheck = []Mode{Standard, High, Low, Front, Back}
