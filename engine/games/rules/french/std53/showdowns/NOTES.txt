@@ -1,0 +1,1 @@
+In a far future I may add chot versions of showdown algorithms to rank 53-card games like pai gow or caribbean.
