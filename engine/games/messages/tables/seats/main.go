@@ -2,7 +2,6 @@ package seats
 
 import (
 	"github.com/luismasuelli/poker-go/engine/games/cards"
-	"github.com/luismasuelli/poker-go/engine/games/messages/tables"
 	"github.com/luismasuelli/poker-go/engine/games/tables/seats"
 )
 
@@ -12,15 +11,17 @@ import (
 // a table status, and the seat belongs to that
 // table.
 type SeatMessage struct {
-	tables.TableMessage
-	Seat uint8
+	// The ID of the seat.
+	SeatID  uint8
+
+	// The message content.
+	Content interface{}
 }
 
 // Tells when a seat has been occupied by
 // a new player (it only shows its display
 // data), and tells the new seat's stack.
 type SeatHasBeenOccupied struct {
-	SeatMessage
 	PlayerDisplay interface{}
 	Stack         uint64
 }
@@ -28,39 +29,31 @@ type SeatHasBeenOccupied struct {
 // Tells when a seat has been released.
 // It also tells reason and arbitrary
 // description data.
-type SeatHasBeenReleased struct {
-	SeatMessage
-}
+type SeatHasBeenReleased struct {}
 
 // Tells when a seat's status was changed.
 type SeatStatusHasChanged struct {
-	SeatMessage
 	PlayerDisplay interface{}
 	NewStatus     seats.Status
 }
 
 // Tells when a seat's flag was set.
 type SeatFlagHasBeenSet struct {
-	SeatMessage
 	Flag       seats.Flags
 	FinalFlags seats.Flags
 }
 
 // Tells when a seat's flag was cleared.
-type SeatFlagHasBeenCleared struct {
-	SeatMessage
-}
+type SeatFlagHasBeenCleared struct {}
 
 // Tells when a seat stack gained chips.
 type SeatStackHasGrown struct {
-	SeatMessage
 	Chips      uint64
 	FinalStack uint64
 }
 
 // Tells when a seat stack lost chips.
 type SeatStackHasShrank struct {
-	SeatMessage
 	Chips      uint64
 	FinalStack uint64
 }
@@ -70,7 +63,6 @@ type SeatStackHasShrank struct {
 // tournament initialization or perhaps
 // administrative actions.
 type SeatStackHasChanged struct {
-	SeatMessage
 	FinalStack uint64
 }
 
@@ -80,14 +72,12 @@ type SeatStackHasChanged struct {
 // cards and additional drawn cards
 // for "draw" modes.
 type SeatDrewCards struct {
-	SeatMessage
 	Cards []cards.Card
 }
 
 // Tells when a seat gives N cards.
 // Intended for "draw" modes only.
 type SeatGaveCards struct {
-	SeatMessage
 	Count int
 }
 
@@ -98,7 +88,6 @@ type SeatGaveCards struct {
 // being available to the client but
 // hidden to others.
 type YouDrewCards struct {
-	SeatMessage
 	Cards []cards.Card
 	Shown []bool
 }
@@ -107,6 +96,5 @@ type YouDrewCards struct {
 // cards, and which indices in particular.
 // Intended for "draw" games.
 type YouGaveCards struct {
-	SeatMessage
 	Indices []int
 }
