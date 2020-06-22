@@ -3,6 +3,7 @@ package seats
 import (
 	"github.com/luismasuelli/poker-go/engine/games/cards"
 	"github.com/luismasuelli/poker-go/engine/games/tables/seats"
+	"github.com/luismasuelli/poker-go/engine/games/rules/french/std52/showdowns"
 )
 
 // Messages related to a seat will hold their
@@ -97,4 +98,15 @@ type YouDrewCards struct {
 // Intended for "draw" games.
 type YouGaveCards struct {
 	Indices []int
+}
+
+// Tells which sit player, in a hand
+// and showdown mode, won or split
+// the given pot, and which amount.
+type PlayerWonChips struct {
+	Display  interface{}
+	HandID   uint64
+	Mode     showdowns.ShowdownMode
+	PotIndex uint8
+	Prize    uint64
 }
