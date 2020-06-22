@@ -42,14 +42,14 @@ func (pot *Pot) SeatHasLeft(seat seats.Seat) {
 // and the money is divided among them. If no
 // given winners are involved in this pot, then
 // the result is (0, 0).
-func (pot *Pot) Split(winners []seats.Seat) (map[seats.Seat]bool, uint64, uint8) {
+func (pot *Pot) Split(winners []seats.Seat) ([]seats.Seat, uint64, uint8) {
 	// Compute intersections to keep only the
 	// players that are both winners and also
 	// involved in the pot.
-	involvedWinners := map[seats.Seat]bool{}
+	involvedWinners := []seats.Seat(nil)
 	for _, winner := range winners {
 		if _, ok := pot.seats[winner]; ok {
-			involvedWinners[winner] = true;
+			involvedWinners = append(involvedWinners, winner)
 		}
 	}
 
