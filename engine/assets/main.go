@@ -49,6 +49,39 @@ func NewPayment(asset Asset, amount uint64) *Payment {
 // for the 1st place, and [9] for the 10th place.
 type Prizes []Payment
 
-// Buy-ins are a mapping of a required asset and its
-// required amount.
-type BuyIns map[Asset]uint8
+// A buy-in differs from a payment that it may
+// allow a range of amounts.
+type BuyIn struct {
+	asset     Asset
+	minAmount uint64
+	maxAmount uint64
+}
+
+// Gets the asset of this buy-in.
+func (buyIn *BuyIn) Asset() Asset {
+	return buyIn.asset
+}
+
+// Gets the minimum amount of this buy-in.
+func (buyIn *BuyIn) MinAmount() uint64 {
+	return buyIn.minAmount
+}
+
+// Gets the maximum amount of this buy-in.
+func (buyIn *BuyIn) MaxAmount() uint64 {
+	return buyIn.maxAmount
+}
+
+// Creates a new buy-in by giving the asset and
+// the allowed range of amounts (typically, only
+// cash games will allow ranges - tournaments
+// will only allow a single value).
+func NewBuyIn(asset Asset, minAmount, maxAmount uint64) *BuyIn {
+	if minAmount > maxAmount {
+		minAmount, maxAmount = maxAmount, minAmount
+	}
+	return &BuyIn{asset, minAmount, maxAmount}
+}
+
+// A map of assets against the buy-ins.
+type BuyIns map[Asset]BuyIn
