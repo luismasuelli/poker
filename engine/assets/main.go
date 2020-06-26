@@ -19,3 +19,36 @@ type Asset interface {
 	Type()    AssetType
 	Caption() string
 }
+
+// A payment is an amount of a specific asset.
+// Payments may come in two different cases,
+// being prizes and buy-ins.
+type Payment struct {
+	asset  Asset
+	amount uint64
+}
+
+// Gets the payment asset.
+func (payment *Payment) Asset() Asset {
+	return payment.asset
+}
+
+// Gets the payment amount.
+func (payment *Payment) Amount() uint64 {
+	return payment.amount
+}
+
+// Creates a new payment by giving the asset and
+// the amount. Nil values will be dealt with later.
+func NewPayment(asset Asset, amount uint64) *Payment {
+	return &Payment{asset, amount}
+}
+
+// Prizes are intended for tournaments and specified
+// in order. This means: [0] will contain the prize
+// for the 1st place, and [9] for the 10th place.
+type Prizes []Payment
+
+// Buy-ins are a mapping of a required asset and its
+// required amount.
+type BuyIns map[Asset]uint8
